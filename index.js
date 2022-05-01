@@ -12,8 +12,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-
-
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.xwpgf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
@@ -29,30 +27,35 @@ async function run() {
             res.send(inventories);
         });
 
-        app.get('/inventories/:id', async(req, res) =>{
+        app.get('/inventories/:id', async (req, res) => {
             const id = req.params.id;
-            const query={_id: ObjectId(id)};
+            const query = { _id: ObjectId(id) };
             const inventories = await inventoriesCollection.findOne(query);
             res.send(inventories);
         });
 
         // post 
-        app.post('/inventories', async(req, res) =>{
-            const newInventories =req.body;
+        app.post('/inventories', async (req, res) => {
+            const newInventories = req.body;
             const result = await inventoriesCollection.insertOne(newInventories);
             res.send(result);
-        })
+        });
+
+        // Delete 
+        app.delete('/inventories/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await inventoriesCollection.deleteOne(query);
+            res.send(result);
+        });
+
 
     }
     finally {
-
     }
 }
 
 run().catch(console.dir);
-
-
-
 
 app.get('/', (req, res) => {
     res.send('Running warehouse server');
