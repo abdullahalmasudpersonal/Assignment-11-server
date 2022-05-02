@@ -19,6 +19,7 @@ async function run() {
     try {
         await client.connect();
         const inventoriesCollection = client.db('computerWarehouse').collection('inventories');
+        const orderCollection = client.db('computerWarehouse').collection('order');
 
         app.get('/inventories', async (req, res) => {
             const query = {};
@@ -49,6 +50,12 @@ async function run() {
             res.send(result);
         });
 
+        // order 
+        app.post('/order', async(req, res) =>{
+            const order =req.body;
+            const result = await orderCollection.insertOne(order);
+            res.send(result);
+        })
 
     }
     finally {
