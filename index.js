@@ -48,13 +48,7 @@ async function run() {
             res.send({ accessToken });
         })
 
-
-
         // INVENTORIES API
-
-
-
-
         app.get('/inventories', async (req, res) => {
             const query = {};
             const cursor = inventoriesCollection.find(query);
@@ -100,7 +94,6 @@ async function run() {
             }
 
         })
-
 
         app.post('/order', async (req, res) => {
             const order = req.body;
